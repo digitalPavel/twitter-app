@@ -1,0 +1,41 @@
+﻿@page "/tweets"
+@using BlazorTwitterApplication.Shared
+@inject HttpClient Http
+
+<PageTitle>Twitter</PageTitle>
+
+<h3>Recent tweets:</h3>
+<h1>@Cashteg1, @Cashteg2</h1>
+
+@if (tweetsList == null)
+{
+    <a1>Loading...</a1>
+}
+else
+{
+    @foreach (var tweet in tweetsList)
+    {
+        <div class="card bg-light mb-3">
+            <p class="card-body">
+                <a>@tweet.text</a>
+            </p>
+        </div>
+    }
+
+}
+
+@code {
+    private List<Tweet> tweetsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tweets tweets = await Http.GetFromJsonAsync<Tweets>("api/Tweetss");
+        tweetsList = tweets.data.ToList();
+    }
+
+    [Parameter]
+    public string Cashteg1 { get; set; } = "#azure";
+    [Parameter]
+    public string Cashteg2 { get; set; } = "#dotnetcore";
+
+}
